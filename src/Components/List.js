@@ -12,7 +12,7 @@ import { getListStyle, getItemStyle, reorder } from '../Utils/_List.js';
 const API = process.env.REACT_APP_API_URL,
   TOKEN = process.env.REACT_APP_API_TOKEN,
   USER = process.env.REACT_APP_API_USER;
-const Layout = props => {
+const List = props => {
   const [data, setData] = useState([]);
   const [start, setStart] = useState(1);
   const [showCreateModal, setCreateModal] = useState(false);
@@ -115,4 +115,4 @@ const Layout = props => {
   );
 };
 
-export default Layout;
+export default List;
