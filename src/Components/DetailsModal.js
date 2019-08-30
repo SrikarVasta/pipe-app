@@ -35,6 +35,7 @@ const Name = styled.h5`
 `;
 const DetailsContainer = styled.div`
   width: 75%;
+  padding: 20px 0px;
   .row {
     padding: 10px 0;
     align-items: center;

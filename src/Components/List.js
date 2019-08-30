@@ -4,17 +4,23 @@ import axios from 'axios';
 import { LoadMoreButton, HeadingLabel } from './common/CommonComponents';
 import ItemRowCard from './ItemRowCard';
 import DetailsModal from './DetailsModal';
-
+import CreatePerson from './CreatePerson';
+import { Button } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { getListStyle, getItemStyle, reorder } from '../Utils/_List.js';
-
+const API = process.env.REACT_APP_API_URL,
+  TOKEN = process.env.REACT_APP_API_TOKEN,
+  USER = process.env.REACT_APP_API_USER;
 const Layout = props => {
   const [data, setData] = useState([]);
   const [start, setStart] = useState(1);
+  const [showCreateModal, setCreateModal] = useState(false);
   const [modalContent, setModalContent] = useState();
   const fields = `:(cc_email,active_flag,id,name,label,org_id,email,phone,closed_deals_count,open_deals_count,next_activity_date,owner_id,next_activity_time)`;
   const fetchData = async startVal => {
     const result = await axios(
-      `https://pipedrive-test-a2111a.pipedrive.com/api/v1/persons/list?api_token=5cbf68ebabed739d6922e2fa2fd433644ff4b1f3&user_id=10170341&sort=&label=&start=0&type=person&_=1566827251412&limit=10&start=${startVal}`
+      `${API}/persons/list?api_token=${TOKEN}&user_id=${USER}&sort=&label=&start=0&type=person&_=1566827251412&limit=10&start=${startVal}`
     );
     if (startVal && data.length) {
       setData([...data, ...(result.data && result.data.data)]);
@@ -33,18 +39,32 @@ const Layout = props => {
     const items = reorder(data, result.source.index, result.destination.index);
     setData(items);
   };
-  console.log('--------modalContent------------');
-  console.log(modalContent);
-  console.log('--------------------');
   if (!data.length) return <></>;
   return (
     <>
-      <HeadingLabel>People&apos;s List</HeadingLabel>
-
+      <HeadingLabel>
+        <span>People&apos;s List</span>
+        <span>
+          <Button
+            className="addpeople"
+            onClick={() => {
+              setCreateModal(true);
+            }}
+          >
+            <FontAwesomeIcon icon={faPlus} />
+          </Button>
+        </span>
+      </HeadingLabel>
       <DetailsModal
         modalContent={modalContent}
         clear={() => {
           setModalContent(undefined);
+        }}
+      />
+      <CreatePerson
+        shown={showCreateModal}
+        clear={() => {
+          setCreateModal(false);
         }}
       />
       <DragDropContext onDragEnd={onDragEnd}>

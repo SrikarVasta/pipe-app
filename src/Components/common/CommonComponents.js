@@ -16,6 +16,15 @@ export const HeadingLabel = styled.h3`
     border: none;
     padding: 0;
   }
+  .addpeople {
+    background: #08a742;
+    border-color: #08a742;
+    color: white;
+    margin-right: 13px;
+  }
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   background: transparent;
   color: #282c34;
   padding: 20px 10px;
