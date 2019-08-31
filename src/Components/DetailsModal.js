@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Modal, Button, Row, Col } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { HeadingLabel } from './common/CommonComponents';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import styled from 'styled-components';
+import PersonContext from '../Context/PersonsContext';
 const Content = styled.div`
   &.content {
     min-height: 450px;
@@ -92,6 +93,7 @@ const Muted = styled.h5`
 `;
 const DetailsModal = ({ clear, modalContent }) => {
   console.log(modalContent);
+  const context = useContext(PersonContext);
   if (!modalContent) return <></>;
   return (
     <>
@@ -181,6 +183,15 @@ const DetailsModal = ({ clear, modalContent }) => {
         </Modal.Body>
         <Modal.Footer>
           <FootContent>
+            <Button
+              variant="danger"
+              onClick={() => {
+                context.removePerson(modalContent.id);
+                clear();
+              }}
+            >
+              Delete
+            </Button>
             <Button
               variant="outline-dark"
               onClick={_ => {

@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Modal, Button, Row, Col, Form } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { HeadingLabel } from './common/CommonComponents';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import styled from 'styled-components';
+import PersonContext from '../Context/PersonsContext';
+
 const Content = styled.div`
   &.content {
     min-height: 450px;
@@ -47,11 +49,16 @@ const FootContent = styled.div`
   background-color: #f5f7fb;
 `;
 const CreatePerson = ({ shown, clear }) => {
+  const context = useContext(PersonContext);
+  const submitted = event => {
+    event.preventDefault();
+    console.log(event);
+  };
   if (!shown) return <></>;
   return (
     <>
       <Modal show={shown} onHide={clear} centered>
-        <Form>
+        <Form onSubmit={submitted}>
           <Modal.Header>
             <HeadContent>
               <HeadingLabel className="no-border">Person Creation</HeadingLabel>

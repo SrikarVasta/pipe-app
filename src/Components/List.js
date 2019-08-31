@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext, useReducer } from 'react';
+import PersonContext from '../Context/PersonsContext';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import axios from 'axios';
 import { LoadMoreButton, HeadingLabel } from './common/CommonComponents';
@@ -9,24 +10,16 @@ import { Button } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { getListStyle, getItemStyle, reorder } from '../Utils/_List.js';
-const API = process.env.REACT_APP_API_URL,
-  TOKEN = process.env.REACT_APP_API_TOKEN,
-  USER = process.env.REACT_APP_API_USER;
 const List = props => {
-  const [data, setData] = useState([]);
   const [start, setStart] = useState(1);
   const [showCreateModal, setCreateModal] = useState(false);
   const [modalContent, setModalContent] = useState();
-  const fields = `:(cc_email,active_flag,id,name,label,org_id,email,phone,closed_deals_count,open_deals_count,next_activity_date,owner_id,next_activity_time)`;
+  const context = useContext(PersonContext);
   const fetchData = async startVal => {
-    const result = await axios(
-      `${API}/persons/list?api_token=${TOKEN}&user_id=${USER}&sort=&label=&start=0&type=person&_=1566827251412&limit=10&start=${startVal}`
-    );
-    if (startVal && data.length) {
-      setData([...data, ...(result.data && result.data.data)]);
-    } else setData(result.data && result.data.data);
     setStart(startVal);
+    context.loadPersons(startVal);
   };
+  const { persons, orderPersons } = context;
   useEffect(() => {
     fetchData(0);
   }, []);
@@ -36,10 +29,14 @@ const List = props => {
   };
   const onDragEnd = result => {
     if (!result.destination) return;
-    const items = reorder(data, result.source.index, result.destination.index);
-    setData(items);
+    const items = reorder(
+      persons,
+      result.source.index,
+      result.destination.index
+    );
+    orderPersons(items);
   };
-  if (!data.length) return <></>;
+  if (!persons.length) return <></>;
   return (
     <>
       <HeadingLabel>
@@ -75,7 +72,7 @@ const List = props => {
               ref={provided.innerRef}
               style={getListStyle(snapshot.isDraggingOver)}
             >
-              {data.map((item, index) => (
+              {persons.map((item, index) => (
                 <Draggable
                   key={'person-' + item.id}
                   draggableId={item.id}
