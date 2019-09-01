@@ -1,45 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCity } from '@fortawesome/free-solid-svg-icons';
-const Span = styled.span`
-  height: 30px;
-  display: flex;
-  align-items: center;
-`;
-const Muted = styled.span`
-  color: grey;
-  line-height: 5px;
-`;
-const Block = styled.div`
-  margin: 10px 0;
-`;
-const IconHolder = styled.div`
-  font-size: 12px;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  span:first-child {
-    padding-right: 5px;
-  }
-`;
-const Content = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;
-const ImageContainer = styled.div`
-  height: 45px;
-  width: 45px;
-  overflow: hidden;
-  border-radius: 50%;
-  img {
-    width: 100%;
-    height: auto;
-  }
-`;
+import {
+  Span,
+  Muted,
+  Block,
+  IconHolder,
+  Content,
+  ImageContainer
+} from './StyledComponents/ItemRowCard.styles';
+
 const ItemRowCard = ({ item }) => {
+  let splitName = item.name.split(' ');
+  let splitFinal = splitName.length - 1;
+  let first = splitName[0] && splitName[0][0];
+  let last = splitFinal && splitName[splitFinal] && splitName[splitFinal][0];
   return (
     <>
       <Content>
@@ -55,7 +31,8 @@ const ItemRowCard = ({ item }) => {
           </IconHolder>
         </Block>
         <ImageContainer>
-          <img src="https://upload.wikimedia.org/wikipedia/commons/f/f3/Nicolas_Cage_-_66%C3%A8me_Festival_de_Venise_%28Mostra%29.jpg" />
+          {first}
+          {last ? last : first}
         </ImageContainer>
       </Content>
     </>

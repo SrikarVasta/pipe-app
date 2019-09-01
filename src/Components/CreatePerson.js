@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from 'react';
-import { Modal, Button, Row, Col, Form } from 'react-bootstrap';
+import { Modal, Button, Form } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { HeadingLabel } from './StyledComponents/common/CommonComponents';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -7,7 +7,6 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import PersonContext from '../Context/PersonsContext';
 import { useInput } from '../Hooks/input-hook';
 import {
-  Content,
   HeadContent,
   FootContent
 } from './StyledComponents/CreatePerson.styles';
@@ -22,6 +21,7 @@ const CreatePerson = ({ shown, clear }) => {
       resetOrg();
       clear();
     };
+    // eslint-disable-next-line
   }, []);
   const context = useContext(PersonContext);
   const { value: email, bind: bindEmail, reset: resetEmail } = useInput('');

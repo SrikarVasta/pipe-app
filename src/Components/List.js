@@ -10,7 +10,7 @@ import ItemRowCard from './ItemRowCard';
 import DetailsModal from './DetailsModal';
 import CreatePerson from './CreatePerson';
 import SearchComponent from './SearchComponent';
-import { Button, Form } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { getListStyle, getItemStyle, reorder } from '../Utils/_List.js';
@@ -116,7 +116,7 @@ const List = () => {
               loadMore();
             }}
           >
-            Load MOar
+            Load More
           </LoadMoreButton>
         </LoadMoreContainer>
       )}

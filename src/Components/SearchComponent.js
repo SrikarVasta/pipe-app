@@ -8,7 +8,7 @@ const SearchComponent = ({ context }) => {
   const [isSearching, setIsSearching] = useState(false);
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
   useEffect(() => {
-    if (debouncedSearchTerm.length == 0) {
+    if (debouncedSearchTerm.length === 0) {
       context.loadPersons(0);
     }
     if (debouncedSearchTerm && debouncedSearchTerm.length > 2) {
@@ -17,6 +17,7 @@ const SearchComponent = ({ context }) => {
         setIsSearching(false);
       });
     }
+    // eslint-disable-next-line
   }, [debouncedSearchTerm]);
   return (
     <>

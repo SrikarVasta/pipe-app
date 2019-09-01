@@ -30,6 +30,15 @@ const DetailsModal = ({ clear, modalContent }) => {
     }
   }, [modalContent.id]);
   const context = useContext(PersonContext);
+
+  let splitName = loadedData && loadedData.name.split(' ');
+  let splitFinal = splitName && splitName.length - 1;
+  let first = splitName && splitName[0] && splitName[0][0];
+  let last =
+    splitName &&
+    splitFinal &&
+    splitName[splitFinal] &&
+    splitName[splitFinal][0];
   return (
     <>
       <Modal show={!!modalContent} onHide={clear} centered>
@@ -54,7 +63,7 @@ const DetailsModal = ({ clear, modalContent }) => {
             <Content className="content">
               <div className="name-block">
                 <ImageContainer>
-                  <img src="https://upload.wikimedia.org/wikipedia/commons/f/f3/Nicolas_Cage_-_66%C3%A8me_Festival_de_Venise_%28Mostra%29.jpg" />
+                  {first} {last ? last : first}
                 </ImageContainer>
                 <Name>{loadedData.name}</Name>
                 <Phone>

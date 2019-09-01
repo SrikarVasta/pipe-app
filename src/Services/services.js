@@ -1,7 +1,7 @@
+const API = process.env.REACT_APP_API_URL,
+  TOKEN = process.env.REACT_APP_API_TOKEN,
+  USER = process.env.REACT_APP_API_USER;
 export function searchCharacters(search, startVal) {
-  const API = process.env.REACT_APP_API_URL,
-    TOKEN = process.env.REACT_APP_API_TOKEN,
-    USER = process.env.REACT_APP_API_USER;
   return fetch(`${API}/persons/find?api_token=${TOKEN}&term=${search}`, {
     method: 'GET'
   })
@@ -23,11 +23,7 @@ export function searchCharacters(search, startVal) {
     });
 }
 export function fetchPersons(startVal) {
-  const API = process.env.REACT_APP_API_URL,
-    TOKEN = process.env.REACT_APP_API_TOKEN,
-    USER = process.env.REACT_APP_API_USER;
   const fields = `:(cc_email,id,name,label,org_id,org_name)`;
-
   return fetch(
     `${API}/persons/list${fields}?api_token=${TOKEN}&user_id=${USER}&sort=&label=&start=0&type=person&limit=10&start=${startVal}`,
     {
@@ -53,9 +49,6 @@ export function fetchPersons(startVal) {
 }
 
 export function fetchPerson(id) {
-  const API = process.env.REACT_APP_API_URL,
-    TOKEN = process.env.REACT_APP_API_TOKEN,
-    USER = process.env.REACT_APP_API_USER;
   return fetch(`${API}/persons/${id}?api_token=${TOKEN}&user_id=${USER}`, {
     method: 'GET'
   })
@@ -67,9 +60,6 @@ export function fetchPerson(id) {
     });
 }
 export function deletePerson(id) {
-  const API = process.env.REACT_APP_API_URL,
-    TOKEN = process.env.REACT_APP_API_TOKEN,
-    USER = process.env.REACT_APP_API_USER;
   return fetch(`${API}/persons/${id}?api_token=${TOKEN}&user_id=${USER}`, {
     method: 'DELETE'
   })
@@ -81,9 +71,6 @@ export function deletePerson(id) {
     });
 }
 export function createPerson(person) {
-  const API = process.env.REACT_APP_API_URL,
-    TOKEN = process.env.REACT_APP_API_TOKEN,
-    USER = process.env.REACT_APP_API_USER;
   return fetch(`${API}/persons?api_token=${TOKEN}&user_id=${USER}`, {
     method: 'POST',
     headers: {

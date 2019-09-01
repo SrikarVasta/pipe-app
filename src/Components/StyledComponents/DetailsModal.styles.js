@@ -58,7 +58,7 @@ export const HeadContent = styled.div`
 `;
 export const FootContent = styled.div`
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   width: 100%;
   background-color: #f5f7fb;
 `;
@@ -68,6 +68,13 @@ export const ImageContainer = styled.div`
   margin-bottom: 25px;
   overflow: hidden;
   border-radius: 50%;
+  background: #90caf9;
+  color: #1976d2;
+  font-size: 35px;
+  font-weight: 600;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   img {
     width: 100%;
     height: auto;
