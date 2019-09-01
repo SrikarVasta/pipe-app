@@ -1,16 +1,19 @@
-import React, { useState, useEffect, useContext, useReducer } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import PersonContext from '../Context/PersonsContext';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-import axios from 'axios';
-import { LoadMoreButton, HeadingLabel } from './common/CommonComponents';
+import {
+  LoadMoreButton,
+  HeadingLabel
+} from './StyledComponents/common/CommonComponents';
 import ItemRowCard from './ItemRowCard';
 import DetailsModal from './DetailsModal';
 import CreatePerson from './CreatePerson';
-import { Button } from 'react-bootstrap';
+import SearchComponent from './SearchComponent';
+import { Button, Form } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { getListStyle, getItemStyle, reorder } from '../Utils/_List.js';
-const List = props => {
+const List = () => {
   const [start, setStart] = useState(1);
   const [showCreateModal, setCreateModal] = useState(false);
   const [modalContent, setModalContent] = useState();
@@ -41,7 +44,8 @@ const List = props => {
     <>
       <HeadingLabel>
         <span>People&apos;s List</span>
-        <span>
+        <span className="right-block ">
+          <SearchComponent context={context} />
           <Button
             className="addpeople"
             onClick={() => {
@@ -52,18 +56,26 @@ const List = props => {
           </Button>
         </span>
       </HeadingLabel>
-      <DetailsModal
-        modalContent={modalContent}
-        clear={() => {
-          setModalContent(undefined);
-        }}
-      />
-      <CreatePerson
-        shown={showCreateModal}
-        clear={() => {
-          setCreateModal(false);
-        }}
-      />
+      {modalContent && modalContent.id ? (
+        <DetailsModal
+          modalContent={modalContent}
+          clear={() => {
+            setModalContent(undefined);
+          }}
+        />
+      ) : (
+        ''
+      )}
+      {showCreateModal ? (
+        <CreatePerson
+          shown={showCreateModal}
+          clear={() => {
+            setCreateModal(false);
+          }}
+        />
+      ) : (
+        ''
+      )}
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId="droppable">
           {(provided, snapshot) => (

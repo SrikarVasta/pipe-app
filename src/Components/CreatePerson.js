@@ -1,71 +1,63 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Modal, Button, Row, Col, Form } from 'react-bootstrap';
 import PropTypes from 'prop-types';
-import { HeadingLabel } from './common/CommonComponents';
+import { HeadingLabel } from './StyledComponents/common/CommonComponents';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
-import styled from 'styled-components';
 import PersonContext from '../Context/PersonsContext';
+import { useInput } from '../Hooks/input-hook';
+import {
+  Content,
+  HeadContent,
+  FootContent
+} from './StyledComponents/CreatePerson.styles';
 
-const Content = styled.div`
-  &.content {
-    min-height: 450px;
-    display: flex;
-    justify-content: flex-start;
-    justify-content: flex-start;
-    align-items: center;
-    flex-direction: column;
-    .name-block {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-      width: 375px;
-      border-bottom: 1px solid #dee2e6;
-      border-bottom: 2px solid #dee2e6;
-    }
-  }
-  &.head-content {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-  }
-`;
-const HeadContent = styled.div`
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  height: 20px;
-  .close {
-    cursor: pointer;
-    padding: 17px;
-    font-size: 18px;
-  }
-`;
-const FootContent = styled.div`
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  background-color: #f5f7fb;
-`;
 const CreatePerson = ({ shown, clear }) => {
+  useEffect(() => {
+    return () => {
+      console.log('...leaving');
+      resetEmail();
+      resetName();
+      resetPhone();
+      resetOrg();
+      clear();
+    };
+  }, []);
   const context = useContext(PersonContext);
-  const submitted = event => {
-    event.preventDefault();
-    console.log(event);
+  const { value: email, bind: bindEmail, reset: resetEmail } = useInput('');
+  const { value: name, bind: bindName, reset: resetName } = useInput('');
+  const { value: phone, bind: bindPhone, reset: resetPhone } = useInput('');
+  const { value: org, bind: bindOrg, reset: resetOrg } = useInput('');
+  const closeModal = () => {
+    clear();
   };
+  const handleSubmit = evt => {
+    evt.preventDefault();
+    console.log('--------------------');
+    console.log({ email, name, phone, org });
+    context.addPerson({
+      id: context.persons[context.persons.length - 1].id + 1,
+      email: [{ value: email }],
+      name,
+      phone: [{ value: phone }],
+      org_name: org
+    });
+    console.log('--------------------');
+    closeModal();
+  };
+
   if (!shown) return <></>;
   return (
     <>
-      <Modal show={shown} onHide={clear} centered>
-        <Form onSubmit={submitted}>
+      <Modal show={shown} onHide={closeModal} centered>
+        <Form onSubmit={handleSubmit}>
           <Modal.Header>
             <HeadContent>
               <HeadingLabel className="no-border">Person Creation</HeadingLabel>
               <p
                 className="close"
                 onClick={_ => {
-                  clear();
+                  closeModal();
                 }}
               >
                 <FontAwesomeIcon icon={faTimes} />
@@ -76,24 +68,34 @@ const CreatePerson = ({ shown, clear }) => {
           <Modal.Body>
             <Form.Group controlId="formEmail">
               <Form.Label>Email address</Form.Label>
-              <Form.Control type="email" placeholder="Enter email" />
+              <Form.Control
+                type="email"
+                placeholder="Enter email"
+                {...bindEmail}
+              ></Form.Control>
               <Form.Text className="text-muted">
                 We&rsquo;ll never share your email with anyone else.
               </Form.Text>
             </Form.Group>
             <Form.Group controlId="formName">
               <Form.Label>Name</Form.Label>
-              <Form.Control type="text" placeholder="Enter name" />
-              <Form.Text></Form.Text>
+              <Form.Control
+                type="text"
+                placeholder="Enter name"
+                {...bindName}
+              />
             </Form.Group>
             <Form.Group controlId="formPhone">
               <Form.Label>Phone</Form.Label>
-              <Form.Control type="text" placeholder="Enter Phone" />
-              <Form.Text></Form.Text>
+              <Form.Control
+                type="text"
+                placeholder="Enter Phone"
+                {...bindPhone}
+              />
             </Form.Group>
             <Form.Group controlId="formOrganisation">
               <Form.Label>Org</Form.Label>
-              <Form.Control type="text" placeholder="Enter Org" />
+              <Form.Control type="text" placeholder="Enter Org" {...bindOrg} />
               <Form.Text></Form.Text>
             </Form.Group>
           </Modal.Body>
@@ -102,7 +104,7 @@ const CreatePerson = ({ shown, clear }) => {
               <Button
                 variant="outline-dark"
                 onClick={_ => {
-                  clear();
+                  closeModal();
                 }}
               >
                 Back

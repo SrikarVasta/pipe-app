@@ -51,7 +51,7 @@ const ItemRowCard = ({ item }) => {
             <Span>
               <FontAwesomeIcon icon={faCity} />
             </Span>
-            <Muted>{item.organization && item.organization.name}</Muted>
+            <Muted>{item.org_name}</Muted>
           </IconHolder>
         </Block>
         <ImageContainer>

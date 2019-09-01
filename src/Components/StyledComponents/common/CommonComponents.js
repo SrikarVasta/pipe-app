@@ -16,6 +16,12 @@ export const HeadingLabel = styled.h3`
     border: none;
     padding: 0;
   }
+  .right-block {
+    .search {
+      margin: 0 20px;
+    }
+    display: flex;
+  }
   .addpeople {
     background: #08a742;
     border-color: #08a742;

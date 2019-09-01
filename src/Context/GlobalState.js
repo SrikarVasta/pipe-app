@@ -10,6 +10,7 @@ import {
   LOAD_MORE_PERSONS,
   ORDER_PERSONS
 } from './Reducers';
+const fields = `:(cc_email,id,name,label,org_id,org_name)`;
 const API = process.env.REACT_APP_API_URL,
   TOKEN = process.env.REACT_APP_API_TOKEN,
   USER = process.env.REACT_APP_API_USER;
@@ -25,7 +26,7 @@ const GlobalState = props => {
   const loadPersons = async startVal => {
     let newPersons = [];
     const result = await axios(
-      `${API}/persons/list?api_token=${TOKEN}&user_id=${USER}&sort=&label=&start=0&type=person&limit=10&start=${startVal}`
+      `${API}/persons/list${fields}?api_token=${TOKEN}&user_id=${USER}&sort=&label=&start=0&type=person&limit=10&start=${startVal}`
     );
     if (startVal && personState.persons && personState.persons.length) {
       newPersons = [
