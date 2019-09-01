@@ -1,25 +1,31 @@
-import React from 'react';
-import styled from 'styled-components';
+import React, { useEffect, useState } from 'react';
+import useDebounce from '../Hooks/debounce-hook';
 import { Form } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 
 const SearchComponent = ({ context }) => {
-  console.log('--------------------');
-  console.log(context);
-  console.log('--------------------');
-  const handleChange = e => {
-    console.log('Changing....');
-    console.log(e.target.value);
-  };
+  const [searchTerm, setSearchTerm] = useState('');
+  const [isSearching, setIsSearching] = useState(false);
+  const debouncedSearchTerm = useDebounce(searchTerm, 500);
+  useEffect(() => {
+    if (debouncedSearchTerm.length == 0) {
+      context.loadPersons(0);
+    }
+    if (debouncedSearchTerm && debouncedSearchTerm.length > 2) {
+      setIsSearching(true);
+      context.loadPersonsSearch(debouncedSearchTerm).then(results => {
+        setIsSearching(false);
+      });
+    }
+  }, [debouncedSearchTerm]);
   return (
     <>
+      {isSearching && <div>Searching ...</div>}
       <Form.Control
         type="text"
         className="search"
         placeholder="Search "
-        onChange={e => {
-          handleChange(e);
-        }}
+        onChange={e => setSearchTerm(e.target.value)}
       />
     </>
   );

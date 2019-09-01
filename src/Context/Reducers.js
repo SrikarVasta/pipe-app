@@ -9,27 +9,20 @@ const addPerson = (person, state) => {
   person.id =
     updatedPersonList.length &&
     updatedPersonList[updatedPersonList.length - 1].id + 1;
-  console.log('--------------------');
-  console.log(
-    person.id,
-    updatedPersonList.length &&
-      updatedPersonList[updatedPersonList.length - 1].id + 1
-  );
-  console.log('--------------------');
   updatedPersonList.unshift(person);
   return { ...state, persons: updatedPersonList };
 };
 
-const loadPersons = (persons, state) => {
-  return { ...state, persons: persons };
+const loadPersons = (persons, startVal, loadMore, state) => {
+  return { ...state, persons: persons, startVal, loadMore };
+};
+
+const loadMorePersons = (persons, startVal, loadMore, state) => {
+  return { ...state, persons: persons, startVal, loadMore };
 };
 
 const orderPersons = (persons, state) => {
   return { ...state, persons: persons };
-};
-
-const loadMorePersons = (persons, state) => {
-  return { ...state, persons: [...state.persons, ...persons] };
 };
 
 const removePerson = (personId, state) => {
@@ -48,11 +41,21 @@ export const personReducer = (state, action) => {
     case REMOVE_PERSON:
       return removePerson(action.personId, state);
     case LOAD_PERSONS:
-      return loadPersons(action.persons, state);
+      return loadPersons(
+        action.persons,
+        action.startVal,
+        action.loadMore,
+        state
+      );
     case LOAD_MORE_PERSONS:
       return loadMorePersons(action.persons, state);
     case ORDER_PERSONS:
-      return orderPersons(action.persons, state);
+      return orderPersons(
+        action.persons,
+        action.startVal,
+        action.loadMore,
+        state
+      );
     default:
       return state;
   }

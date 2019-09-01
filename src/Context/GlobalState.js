@@ -1,7 +1,7 @@
-import React, { useState, useReducer } from 'react';
-import axios from 'axios';
+import React, { useReducer } from 'react';
 import PropTypes from 'prop-types';
 import PersonsContext from './PersonsContext';
+import { fetchPersons, searchCharacters } from '../Services/services';
 import {
   personReducer,
   ADD_PERSON,
@@ -10,10 +10,6 @@ import {
   LOAD_MORE_PERSONS,
   ORDER_PERSONS
 } from './Reducers';
-const fields = `:(cc_email,id,name,label,org_id,org_name)`;
-const API = process.env.REACT_APP_API_URL,
-  TOKEN = process.env.REACT_APP_API_TOKEN,
-  USER = process.env.REACT_APP_API_USER;
 const GlobalState = props => {
   const [personState, dispatch] = useReducer(personReducer, { persons: [] });
   const addPerson = person => {
@@ -23,26 +19,35 @@ const GlobalState = props => {
   const removePerson = personId => {
     dispatch({ type: REMOVE_PERSON, personId: personId });
   };
-  const loadPersons = async startVal => {
+  const loadPersons = async (startVal = 0) => {
     let newPersons = [];
-    const result = await axios(
-      `${API}/persons/list${fields}?api_token=${TOKEN}&user_id=${USER}&sort=&label=&start=0&type=person&limit=10&start=${startVal}`
-    );
-    if (startVal && personState.persons && personState.persons.length) {
-      newPersons = [
-        ...personState.persons,
-        ...(result.data && result.data.data)
-      ];
-    } else {
-      newPersons = [
-        ...personState.persons,
-        ...(result.data && result.data.data)
-      ];
-    }
-    dispatch({ type: LOAD_PERSONS, persons: newPersons });
+    fetchPersons(startVal).then(results => {
+      let { data, more_items_in_collection } = results;
+      if (startVal && personState.persons && personState.persons.length) {
+        newPersons = [...personState.persons, ...data];
+      } else {
+        newPersons = [...data];
+      }
+      dispatch({
+        type: LOAD_PERSONS,
+        persons: newPersons,
+        startVal,
+        loadMore: more_items_in_collection
+      });
+    });
   };
-  const loadMorePersons = persons => {
-    dispatch({ type: LOAD_MORE_PERSONS, persons });
+  const loadPersonsSearch = async (key, startVal = 0) => {
+    let newPersons = [];
+    searchCharacters(key, startVal).then(results => {
+      let { data, more_items_in_collection } = results;
+      newPersons = [...data];
+      dispatch({
+        type: LOAD_MORE_PERSONS,
+        persons: newPersons,
+        startVal,
+        loadMore: more_items_in_collection
+      });
+    });
   };
   const orderPersons = persons => {
     dispatch({ type: ORDER_PERSONS, persons });
@@ -51,10 +56,12 @@ const GlobalState = props => {
     <PersonsContext.Provider
       value={{
         persons: personState.persons,
+        startVal: personState.startVal,
+        loadMore: personState.loadMore,
         addPerson,
         removePerson,
         loadPersons,
-        loadMorePersons,
+        loadPersonsSearch,
         orderPersons
       }}
     >
@@ -65,4 +72,5 @@ const GlobalState = props => {
 GlobalState.propTypes = {
   children: PropTypes.any
 };
+
 export default GlobalState;

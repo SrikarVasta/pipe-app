@@ -1,9 +1,10 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import PersonContext from '../Context/PersonsContext';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import {
   LoadMoreButton,
-  HeadingLabel
+  HeadingLabel,
+  LoadMoreContainer
 } from './StyledComponents/common/CommonComponents';
 import ItemRowCard from './ItemRowCard';
 import DetailsModal from './DetailsModal';
@@ -14,20 +15,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { getListStyle, getItemStyle, reorder } from '../Utils/_List.js';
 const List = () => {
-  const [start, setStart] = useState(1);
   const [showCreateModal, setCreateModal] = useState(false);
   const [modalContent, setModalContent] = useState();
   const context = useContext(PersonContext);
   const fetchData = async startVal => {
-    setStart(startVal);
     context.loadPersons(startVal);
   };
   const { persons, orderPersons } = context;
-  useEffect(() => {
-    fetchData(0);
-  }, []);
   const loadMore = () => {
-    let current = start + 10;
+    let current = context.startVal + 10;
     fetchData(current);
   };
   const onDragEnd = result => {
@@ -39,7 +35,9 @@ const List = () => {
     );
     orderPersons(items);
   };
-  if (!persons.length) return <></>;
+  console.log('--------------------');
+  console.log(context);
+  console.log('--------------------');
   return (
     <>
       <HeadingLabel>
@@ -84,42 +82,47 @@ const List = () => {
               ref={provided.innerRef}
               style={getListStyle(snapshot.isDraggingOver)}
             >
-              {persons.map((item, index) => (
-                <Draggable
-                  key={'person-' + item.id}
-                  draggableId={item.id}
-                  index={index}
-                >
-                  {(provided, snapshot) => (
-                    <div
-                      onClick={e => {
-                        setModalContent(item);
-                      }}
-                      ref={provided.innerRef}
-                      {...provided.draggableProps}
-                      {...provided.dragHandleProps}
-                      style={getItemStyle(
-                        snapshot.isDragging,
-                        provided.draggableProps.style
-                      )}
-                    >
-                      <ItemRowCard item={item} />
-                    </div>
-                  )}
-                </Draggable>
-              ))}
+              {persons &&
+                persons.map((item, index) => (
+                  <Draggable
+                    key={'person-' + item.id}
+                    draggableId={item.id}
+                    index={index}
+                  >
+                    {(provided, snapshot) => (
+                      <div
+                        onClick={e => {
+                          setModalContent(item);
+                        }}
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                        style={getItemStyle(
+                          snapshot.isDragging,
+                          provided.draggableProps.style
+                        )}
+                      >
+                        <ItemRowCard item={item} />
+                      </div>
+                    )}
+                  </Draggable>
+                ))}
               {provided.placeholder}
             </div>
           )}
         </Droppable>
       </DragDropContext>
-      <LoadMoreButton
-        onClick={_ => {
-          loadMore();
-        }}
-      >
-        Load MOar
-      </LoadMoreButton>
+      {context.loadMore && (
+        <LoadMoreContainer>
+          <LoadMoreButton
+            onClick={_ => {
+              loadMore();
+            }}
+          >
+            Load MOar
+          </LoadMoreButton>
+        </LoadMoreContainer>
+      )}
     </>
   );
 };

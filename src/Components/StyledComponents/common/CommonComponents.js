@@ -10,7 +10,10 @@ export const LoadMoreButton = styled.button`
   text-transform: uppercase;
   min-width: 50px;
 `;
-
+export const LoadMoreContainer = styled.div`
+  display: flex;
+  justify-content: center;
+`;
 export const HeadingLabel = styled.h3`
   &.no-border {
     border: none;

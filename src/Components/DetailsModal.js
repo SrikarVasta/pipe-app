@@ -5,8 +5,6 @@ import { HeadingLabel } from './StyledComponents/common/CommonComponents';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import PersonContext from '../Context/PersonsContext';
-import axios from 'axios';
-
 import {
   Content,
   DetailsContainer,
@@ -18,23 +16,19 @@ import {
   Muted,
   Name
 } from './StyledComponents/DetailsModal.styles';
-const API = process.env.REACT_APP_API_URL,
-  TOKEN = process.env.REACT_APP_API_TOKEN,
-  USER = process.env.REACT_APP_API_USER;
+import { fetchPerson } from '../Services/services';
 
 const DetailsModal = ({ clear, modalContent }) => {
   let [loadedData, setLoadedData] = useState();
-  const fetchData = async id => {
-    const result = await axios(
-      `${API}/persons/${id}?api_token=${TOKEN}&user_id=${USER}`
-    );
-    let resultData = result && result.data && result.data.data;
-    if (resultData) setLoadedData(resultData);
-  };
   useEffect(() => {
-    console.log(modalContent);
-    fetchData(modalContent.id);
-  }, []);
+    if (modalContent.id) {
+      fetchPerson(modalContent.id).then(result => {
+        setLoadedData(result);
+      });
+    } else {
+      setLoadedData(undefined);
+    }
+  }, [modalContent.id]);
   const context = useContext(PersonContext);
   return (
     <>
