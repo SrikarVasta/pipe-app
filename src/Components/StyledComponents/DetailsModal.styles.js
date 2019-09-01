@@ -28,6 +28,7 @@ export const Content = styled.div`
   }
 `;
 export const Name = styled.h5`
+  text-transform: capitalize;
   font-weight: 900;
   font-size: 17px;
 `;
@@ -71,6 +72,7 @@ export const ImageContainer = styled.div`
   background: #90caf9;
   color: #1976d2;
   font-size: 35px;
+  text-transform: uppercase;
   font-weight: 600;
   display: flex;
   justify-content: center;

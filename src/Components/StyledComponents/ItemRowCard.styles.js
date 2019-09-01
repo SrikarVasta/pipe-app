@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 export const Span = styled.span`
+  text-transform: capitalize;
   height: 30px;
   display: flex;
   align-items: center;
@@ -33,6 +34,7 @@ export const ImageContainer = styled.div`
   border-radius: 50%;
   background: #90caf9;
   color: #1976d2;
+  text-transform: uppercase;
   justify-content: center;
   align-items: center;
   display: flex;

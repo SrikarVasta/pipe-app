@@ -59,6 +59,22 @@ export function fetchPerson(id) {
       return [];
     });
 }
+export function fetchOrganizations() {
+  const fields = `:(name,id)`;
+  return fetch(
+    `${API}/organizations${fields}?api_token=${TOKEN}&user_id=${USER}&limit=10`,
+    {
+      method: 'GET'
+    }
+  )
+    .then(r => r.json())
+    .then(r => r.data)
+    .catch(error => {
+      console.error(error);
+      return [];
+    });
+}
+
 export function deletePerson(id) {
   return fetch(`${API}/persons/${id}?api_token=${TOKEN}&user_id=${USER}`, {
     method: 'DELETE'

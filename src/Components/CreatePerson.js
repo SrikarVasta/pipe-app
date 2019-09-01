@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { HeadingLabel } from './StyledComponents/common/CommonComponents';
@@ -10,7 +10,7 @@ import {
   HeadContent,
   FootContent
 } from './StyledComponents/CreatePerson.styles';
-
+import SelectOrg from './SelectOrg';
 const CreatePerson = ({ shown, clear }) => {
   useEffect(() => {
     return () => {
@@ -18,30 +18,26 @@ const CreatePerson = ({ shown, clear }) => {
       resetEmail();
       resetName();
       resetPhone();
-      resetOrg();
       clear();
     };
     // eslint-disable-next-line
   }, []);
   const context = useContext(PersonContext);
+  const [org, setOrg] = useState();
   const { value: email, bind: bindEmail, reset: resetEmail } = useInput('');
   const { value: name, bind: bindName, reset: resetName } = useInput('');
   const { value: phone, bind: bindPhone, reset: resetPhone } = useInput('');
-  const { value: org, bind: bindOrg, reset: resetOrg } = useInput('');
   const closeModal = () => {
     clear();
   };
   const handleSubmit = evt => {
     evt.preventDefault();
-    console.log('--------------------');
-    console.log({ email, name, phone, org });
     context.addPerson({
       email: [{ value: email }],
       name,
-      phone: [{ value: phone }]
-      // org_name: org
+      phone: [{ value: phone }],
+      org_id: org
     });
-    console.log('--------------------');
     closeModal();
   };
 
@@ -93,11 +89,7 @@ const CreatePerson = ({ shown, clear }) => {
                 {...bindPhone}
               />
             </Form.Group>
-            <Form.Group controlId="formOrganisation">
-              <Form.Label>Org</Form.Label>
-              <Form.Control type="text" placeholder="Enter Org" {...bindOrg} />
-              <Form.Text></Form.Text>
-            </Form.Group>
+            <SelectOrg setCurrentOrg={setOrg} />
           </Modal.Body>
           <Modal.Footer>
             <FootContent>
