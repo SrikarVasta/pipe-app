@@ -100,6 +100,6 @@ export function createPerson(person) {
     .then(r => r.data)
     .catch(error => {
       console.error(error);
-      return [];
+      return null;
     });
 }

@@ -19,7 +19,7 @@ const GlobalState = props => {
   const [personState, dispatch] = useReducer(personReducer, { persons: [] });
   const addPerson = person => {
     createPerson(person).then(results => {
-      dispatch({ type: ADD_PERSON, person: results });
+      if (results) dispatch({ type: ADD_PERSON, person: results });
     });
   };
 
@@ -35,7 +35,7 @@ const GlobalState = props => {
       if (startVal && personState.persons && personState.persons.length) {
         newPersons = [...personState.persons, ...data];
       } else {
-        newPersons = [...data];
+        newPersons = data ? [...data] : [];
       }
       dispatch({
         type: LOAD_PERSONS,
