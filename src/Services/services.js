@@ -66,3 +66,37 @@ export function fetchPerson(id) {
       return [];
     });
 }
+export function deletePerson(id) {
+  const API = process.env.REACT_APP_API_URL,
+    TOKEN = process.env.REACT_APP_API_TOKEN,
+    USER = process.env.REACT_APP_API_USER;
+  return fetch(`${API}/persons/${id}?api_token=${TOKEN}&user_id=${USER}`, {
+    method: 'DELETE'
+  })
+    .then(r => r.json())
+    .then(r => r.data)
+    .catch(error => {
+      console.error(error);
+      return [];
+    });
+}
+export function createPerson(person) {
+  const API = process.env.REACT_APP_API_URL,
+    TOKEN = process.env.REACT_APP_API_TOKEN,
+    USER = process.env.REACT_APP_API_USER;
+  return fetch(`${API}/persons?api_token=${TOKEN}&user_id=${USER}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(person)
+  })
+    .then(r => {
+      return r.json();
+    })
+    .then(r => r.data)
+    .catch(error => {
+      console.error(error);
+      return [];
+    });
+}

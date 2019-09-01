@@ -1,7 +1,12 @@
 import React, { useReducer } from 'react';
 import PropTypes from 'prop-types';
 import PersonsContext from './PersonsContext';
-import { fetchPersons, searchCharacters } from '../Services/services';
+import {
+  fetchPersons,
+  searchCharacters,
+  createPerson,
+  deletePerson
+} from '../Services/services';
 import {
   personReducer,
   ADD_PERSON,
@@ -13,11 +18,15 @@ import {
 const GlobalState = props => {
   const [personState, dispatch] = useReducer(personReducer, { persons: [] });
   const addPerson = person => {
-    dispatch({ type: ADD_PERSON, person: person });
+    createPerson(person).then(results => {
+      dispatch({ type: ADD_PERSON, person: results });
+    });
   };
 
   const removePerson = personId => {
-    dispatch({ type: REMOVE_PERSON, personId: personId });
+    deletePerson(personId).then(results => {
+      dispatch({ type: REMOVE_PERSON, personId: personId });
+    });
   };
   const loadPersons = async (startVal = 0) => {
     let newPersons = [];

@@ -35,9 +35,6 @@ const List = () => {
     );
     orderPersons(items);
   };
-  console.log('--------------------');
-  console.log(context);
-  console.log('--------------------');
   return (
     <>
       <HeadingLabel>

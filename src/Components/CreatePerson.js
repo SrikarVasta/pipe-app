@@ -36,11 +36,10 @@ const CreatePerson = ({ shown, clear }) => {
     console.log('--------------------');
     console.log({ email, name, phone, org });
     context.addPerson({
-      id: context.persons[context.persons.length - 1].id + 1,
       email: [{ value: email }],
       name,
-      phone: [{ value: phone }],
-      org_name: org
+      phone: [{ value: phone }]
+      // org_name: org
     });
     console.log('--------------------');
     closeModal();
@@ -81,6 +80,7 @@ const CreatePerson = ({ shown, clear }) => {
               <Form.Label>Name</Form.Label>
               <Form.Control
                 type="text"
+                required={true}
                 placeholder="Enter name"
                 {...bindName}
               />

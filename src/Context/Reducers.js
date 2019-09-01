@@ -6,9 +6,6 @@ export const ORDER_PERSONS = 'ORDER_PERSONS';
 
 const addPerson = (person, state) => {
   const updatedPersonList = [...state.persons];
-  person.id =
-    updatedPersonList.length &&
-    updatedPersonList[updatedPersonList.length - 1].id + 1;
   updatedPersonList.unshift(person);
   return { ...state, persons: updatedPersonList };
 };
