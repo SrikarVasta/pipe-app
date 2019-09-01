@@ -40,7 +40,7 @@ const GlobalState = props => {
     let newPersons = [];
     searchCharacters(key, startVal).then(results => {
       let { data, more_items_in_collection } = results;
-      newPersons = [...data];
+      newPersons = data ? [...data] : [];
       dispatch({
         type: LOAD_MORE_PERSONS,
         persons: newPersons,
