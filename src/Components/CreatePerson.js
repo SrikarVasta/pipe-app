@@ -11,9 +11,12 @@ import {
   FootContent
 } from './StyledComponents/CreatePerson.styles';
 import SelectOrg from './SelectOrg';
+//Props:{shown:blooean, clear:function()}
 const CreatePerson = ({ shown, clear }) => {
   useEffect(() => {
+    //run on component mount
     return () => {
+      //runs on component unmount
       console.log('...leaving');
       resetEmail();
       resetName();
@@ -21,7 +24,7 @@ const CreatePerson = ({ shown, clear }) => {
       clear();
     };
     // eslint-disable-next-line
-  }, []);
+  }, []);//can Add varables to make this instance of useEffect to execute on change of that variable
   const context = useContext(PersonContext);
   const [org, setOrg] = useState();
   const { value: email, bind: bindEmail, reset: resetEmail } = useInput('');
@@ -32,12 +35,19 @@ const CreatePerson = ({ shown, clear }) => {
   };
   const handleSubmit = evt => {
     evt.preventDefault();
-    context.addPerson({
+    const data = {
       email: [{ value: email }],
       name,
       phone: [{ value: phone }],
       org_id: org
-    });
+    };
+    console.log("Test");
+    // context.addPerson({
+    //   email: [{ value: email }],
+    //   name,
+    //   phone: [{ value: phone }],
+    //   org_id: org
+    // });
     closeModal();
   };
 
@@ -65,6 +75,7 @@ const CreatePerson = ({ shown, clear }) => {
               <Form.Label>Email address</Form.Label>
               <Form.Control
                 type="email"
+                aria-label="email"
                 placeholder="Enter email"
                 {...bindEmail}
               ></Form.Control>

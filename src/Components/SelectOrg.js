@@ -11,12 +11,14 @@ const SelectOrg = ({ setCurrentOrg }) => {
   const [orgs, setOrgs] = useState();
   useEffect(() => {
     fetchOrganizations().then(results => {
-      const orgnisationList = results.map(org => {
-        return {
-          name: org.name,
-          id: org.id
-        };
-      });
+      const orgnisationList =
+        results &&
+        results.map(org => {
+          return {
+            name: org.name,
+            id: org.id
+          };
+        });
       setOrgs(orgnisationList);
     });
     return () => {
